@@ -1,0 +1,7 @@
+*.log
+*.java
+*.jar
+*.swp
+junk*
+tmp
+*ZZZ
