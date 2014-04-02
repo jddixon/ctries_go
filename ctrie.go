@@ -23,38 +23,44 @@ func NewCTrie() (ct *CTrie, err error) {
 }
 
 // Returns a pointer to ct.root, the pointer having been read atomically.
-func (ct *CTrie) READRoot() *INode {
-	q := unsafe.Pointer(ct.root)
+func (ct *CTrie) READ_RootPtr() unsafe.Pointer {
+	q := unsafe.Pointer(&ct.root)
 	p := atomic.LoadPointer(&q)
-	r := (*INode)(p)
-	return r
-}	
-func (ct *CTrie) insert (k KeyI, v interface{}) (err error) {
+	return p
+}
+func (ct *CTrie) insert(k KeyI, v interface{}) (err error) {
 
-	r	:= ct.READRoot()
+	older := ct.READ_RootPtr()
+	r := (*INode)(older)
 	if r == nil || r.IsNull() {
 		var (
-			m MainNodeI
-			s	*SNode
+			m   MainNodeI
+			s   *SNode
 			scn *CNode
-			rn	*INode
+			rn  *INode
 		)
 		s, err = NewSNode(k, v)
 		if err == nil {
 			m = MainNodeI(s)
-			scn, err = NewCNode(m)
+			scn, err = NewCNode(m, 0) // XXX level == 0 IS WRONG
 			if err == nil {
 				rn, err = NewINode(scn)
-				// XXX DO THE CAS
-				_ = rn	// DEBUG
+				if err == nil {
+					q := unsafe.Pointer(&ct.root)
+					newer := unsafe.Pointer(rn)
+					ok := atomic.CompareAndSwapPointer(&q, older, newer)
+					if !ok {
+						err = ct.insert(k, v)
+					}
+				}
 			}
 		}
 
 	} else { // test iinsert fails
-		// XXX 
+		// XXX
 		// err = insert(k,v)
 	}
 
-	_ = r	// DEBUG
+	_ = r // DEBUG
 	return
 }
