@@ -8,21 +8,21 @@ import (
 	"fmt"
 	xr "github.com/jddixon/xlattice_go/rnglib"
 	. "launchpad.net/gocheck"
-	"strings"
+	// "strings"
 	// "sync/atomic"
 	//"unsafe"
 )
 
 var _ = fmt.Print
 
-func (s *XLSuite) dumpSlice(slice *[]byte) string {
-	sl := *slice
-	var ss []string
-	for i := 0; i < len(sl); i++ {
-		ss = append(ss, fmt.Sprintf("%02x ", sl[i]))
-	}
-	return strings.Join(ss, "")
-}
+//func (s *XLSuite) dumpSlice(slice *[]byte) string {
+//	sl := *slice
+//	var ss []string
+//	for i := 0; i < len(sl); i++ {
+//		ss = append(ss, fmt.Sprintf("%02x ", sl[i]))
+//	}
+//	return strings.Join(ss, "")
+//}
 
 func (s *XLSuite) insertHash(c *C, slice *[]byte, value byte) (where uint) {
 
@@ -32,58 +32,84 @@ func (s *XLSuite) insertHash(c *C, slice *[]byte, value byte) (where uint) {
 	if curSize == 0 {
 		*slice = append(*slice, value)
 	} else {
+		mySlice := *slice
 		inserted := false
 		var i uint
 		var curValue, nextValue byte
 		for i = 0; i < curSize-1; i++ {
-			curValue = (*slice)[i]
+			curValue = mySlice[i]
 			if curValue < value {
-				nextValue = (*slice)[i+1]
+				nextValue = mySlice[i+1]
 				if nextValue < value {
-					fmt.Printf("continuing: %02x after %02x, after %02x\n",
-						value, curValue, nextValue)
+					// fmt.Printf("continuing: %02x after %02x, after %02x\n",
+					//	value, curValue, nextValue)
 					continue
 				}
-				fmt.Printf("inserting %02x after %02x, before %02x\n",
-					value, curValue, nextValue)
+				c.Assert(value < nextValue, Equals, true)
 				where = i + 1
+				//fmt.Printf("A: inserting %02x after %02x, before %02x, at %d\n",
+				//	value, curValue, nextValue, where)
 				// do the insertion
-				left := (*slice)[0:where]
-				right := (*slice)[where:]
-				fmt.Sprintf("%s + %02x + %s\n",
-					s.dumpSlice(&left),
-					value,
-					s.dumpSlice(&right))
+				var left []byte
+				if where > 0 {
+					left = append(left, mySlice[0:where]...)
+				}
+				right := mySlice[where:]
+				//fmt.Printf("%s + %02x + %s => ",
+				//	s.dumpSlice(&left),
+				//	value,
+				//	s.dumpSlice(&right))
+				left = append(left, value)
+				left = append(left, right...)
+
+				//fmt.Printf("%s\n", s.dumpSlice(&left))
+				*slice = left
+				inserted = true
+				break
+			} else {
+				c.Assert(value < curValue, Equals, true)
+				where = i
+				//fmt.Printf("B: inserting %02x before %02x at %d\n",
+				//	value, curValue, where)
+				// do the insertion
+				var left []byte
+				if where > 0 {
+					left = append(left, mySlice[0:where]...)
+				}
+				right := mySlice[where:]
+				// fmt.Printf("%s + %02x + %s\n",
+				//	s.dumpSlice(&left), value, s.dumpSlice(&right))
 				left = append(left, value)
 				left = append(left, right...)
 				*slice = left
 				inserted = true
 				break
+
 			}
 		}
 		if !inserted {
-			fmt.Printf("%02x not inserted yet, examining i = %2d:  ",
-				value, i)
+			c.Assert(uint(i), Equals, curSize-1)
 			c.Assert(i, Equals, curSize-1)
 			curValue = (*slice)[i]
 			if curValue < value {
-				fmt.Printf("appending %02x after %02x\n", value, curValue)
+				//fmt.Printf("C: appending %02x after %02x\n", value, curValue)
 				*slice = append(*slice, value)
 				where = curSize
 			} else {
-				fmt.Printf("inserting %02x before %02x\n", value, curValue)
 				left := (*slice)[0:i]
 				left = append(left, value)
 				left = append(left, curValue)
 				*slice = left
 				where = curSize - 1
+				//fmt.Printf("D: prepended %02x before %02x at %d\n",
+				//	value, curValue, where)
 			}
 		}
 	}
 	newSize := uint(len(*slice))
 	c.Assert(newSize, Equals, curSize+1)
-	fmt.Printf("  inserted 0x%02x at %d/%d\n", value, where, newSize)
-	fmt.Printf("%s\n", s.dumpSlice(slice))
+	//fmt.Printf("  inserted 0x%02x at %d/%d\n", value, where, newSize)
+	// fmt.Printf("%s\n", s.dumpSlice(slice))
 	return
 }
 func (s *XLSuite) TestInsert(c *C) {
@@ -104,19 +130,17 @@ func (s *XLSuite) TestInsert(c *C) {
 		// insert the value into the hash slice in such a way as
 		// to maintain order
 		idx = uint((hc >> lev) & 0x1f)
-		c.Assert(idx, Equals, uint(hc))            // hc is restricted to that range
-		where = s.insertHash(c, &slice, byte(idx)) // this is a uint
-
+		c.Assert(idx, Equals, uint(hc)) // hc is restricted to that range
+		where = s.insertHash(c, &slice, byte(idx))
 		flag = int(1 << (idx + 1))
 		mask = flag - 1
 		pos = intgr.BitCount(int(bitmap) & mask)
-
 		occupied := uint32(1 << idx)
-		// bitmap |= uint32(flag)
 		bitmap |= uint32(occupied)
 
-		fmt.Printf("%02d: hc %02x, idx %02x, mask 0x%08x, bitmap 0x%08x, pos %02d where %02d\n\n",
-			i, hc, idx, mask, bitmap, pos, where)
+		//fmt.Printf("%02d: hc %02x, idx %02x, mask 0x%08x, bitmap 0x%08x, pos %02d where %02d\n\n",
+		//	i, hc, idx, mask, bitmap, pos, where)
+		c.Assert(uint(pos), Equals, where)
 	}
 
 }
