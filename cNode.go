@@ -73,7 +73,7 @@ func (sn *SNode) BitNdx(lvl uint) (index uint, err error) {
 		hc := uint(key.Hashcode()) // cache me ?
 		shiftCount := uint(W * lvl)
 
-		index = ((KEY_MASK << (shiftCount)) & hc) >> shiftCount
+		index = KEY_MASK & (hc >> shiftCount)
 	}
 	return
 }
