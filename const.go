@@ -1,8 +1,8 @@
 package ctries_go
 
 const (
-	VERSION      = "0.1.0"
-	VERSION_DATE = "2014-03-31"
+	VERSION      = "0.1.1"
+	VERSION_DATE = "2014-04-06"
 )
 
 const (

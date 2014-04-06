@@ -1,5 +1,8 @@
 ctries_go/CHANGES
 
+v0.1.1
+    2014-04-06
+        
 v0.1.0
-    2014-03-28
-        * 
+    2014-04-04                                                  * SLOC  365
+        * freeze prior to exporting basic code to hamt_go 

@@ -1,0 +1,9 @@
+ctries_go/TODO
+
+2014-04-06
+    * verify that the INode in CTrie.root returned by what is now   * DONE
+        called ct.READ_RootPtr points to INode.main                 * DONE
+    * and that initally this contains a nil pointer                 * DONE
+
+2014-04-04
+    * freeze, extract HAMT part of code, export to hamt_go project  * DONE

@@ -1,6 +1,10 @@
 package ctries_go
 
-// ctries_go/ctrie_test.go
+// ctries_go/insert_test.go
+
+/////////////////////////////////////////////////////////////////////
+// THIS IS NOW LARGELY VESTIGIAL: this functionality is now in hamt_go
+/////////////////////////////////////////////////////////////////////
 
 import (
 	"code.google.com/p/intmath/intgr"
