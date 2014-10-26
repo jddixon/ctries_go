@@ -5,9 +5,8 @@ package ctries_go
 import (
 	// "encoding/binary"
 	"fmt"
-	xr "github.com/jddixon/xlattice_go/rnglib"
+	xr "github.com/jddixon/rnglib_go"
 	. "gopkg.in/check.v1"
-	// . "launchpad.net/gocheck"
 )
 
 var _ = fmt.Print

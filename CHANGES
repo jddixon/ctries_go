@@ -1,5 +1,8 @@
 ctries_go/CHANGES
 
+v0.1.2
+    2014-10-24
+        * minor fixes necessitated by change in rnglib location * SLOC  389
 v0.1.1
     2014-04-06
         

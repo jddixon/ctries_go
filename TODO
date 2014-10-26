@@ -1,5 +1,8 @@
 ctries_go/TODO
 
+2014-10-24
+    * commit & push v0.1.2
+
 2014-04-06
     * verify that the INode in CTrie.root returned by what is now   * DONE
         called ct.READ_RootPtr points to INode.main                 * DONE
