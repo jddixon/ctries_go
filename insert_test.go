@@ -7,9 +7,10 @@ package ctries_go
 /////////////////////////////////////////////////////////////////////
 
 import (
-	"code.google.com/p/intmath/intgr"
+	//"code.google.com/p/intmath/intgr"
 	"fmt"
 	xr "github.com/jddixon/rnglib_go"
+	xu "github.com/jddixon/xlUtil_go"
 	. "gopkg.in/check.v1"
 )
 
@@ -24,9 +25,9 @@ var _ = fmt.Print
 //	return strings.Join(ss, "")
 //}
 
-func (s *XLSuite) insertHash(c *C, slice *[]byte, value byte) (where uint) {
+func (s *XLSuite) insertHash(c *C, slice *[]byte, value byte) (where uint32) {
 
-	curSize := uint(len(*slice))
+	curSize := uint32(len(*slice))
 	c.Assert(where <= curSize, Equals, true)
 
 	if curSize == 0 {
@@ -34,9 +35,9 @@ func (s *XLSuite) insertHash(c *C, slice *[]byte, value byte) (where uint) {
 	} else {
 		mySlice := *slice
 		inserted := false
-		var i uint
 		var curValue, nextValue byte
-		for i = 0; i < curSize-1; i++ {
+		var i uint32
+		for i = uint32(0); i < curSize-1; i++ {
 			curValue = mySlice[i]
 			if curValue < value {
 				nextValue = mySlice[i+1]
@@ -88,7 +89,6 @@ func (s *XLSuite) insertHash(c *C, slice *[]byte, value byte) (where uint) {
 			}
 		}
 		if !inserted {
-			c.Assert(uint(i), Equals, curSize-1)
 			c.Assert(i, Equals, curSize-1)
 			curValue = (*slice)[i]
 			if curValue < value {
@@ -106,7 +106,7 @@ func (s *XLSuite) insertHash(c *C, slice *[]byte, value byte) (where uint) {
 			}
 		}
 	}
-	newSize := uint(len(*slice))
+	newSize := uint32(len(*slice))
 	c.Assert(newSize, Equals, curSize+1)
 	//fmt.Printf("  inserted 0x%02x at %d/%d\n", value, where, newSize)
 	// fmt.Printf("%s\n", s.dumpSlice(slice))
@@ -116,10 +116,10 @@ func (s *XLSuite) TestInsert(c *C) {
 
 	var (
 		hc, bitmap      uint32
-		lev             uint
-		idx             uint
-		flag, mask, pos int
-		where           uint
+		lev             uint32
+		idx             uint32
+		flag, mask, pos uint32
+		where           uint32
 	)
 	rng := xr.MakeSimpleRNG()
 	perm := rng.Perm(32) // a random permutation of [0..32)
@@ -129,18 +129,19 @@ func (s *XLSuite) TestInsert(c *C) {
 		hc = uint32(perm[i])
 		// insert the value into the hash slice in such a way as
 		// to maintain order
-		idx = uint((hc >> lev) & 0x1f)
-		c.Assert(idx, Equals, uint(hc)) // hc is restricted to that range
+		idx = (hc >> lev) & 0x1f
+		c.Assert(idx, Equals, hc) // hc is restricted to that range
 		where = s.insertHash(c, &slice, byte(idx))
-		flag = int(1 << (idx + 1))
+		flag = uint32(1) << (idx + 1)
 		mask = flag - 1
-		pos = intgr.BitCount(int(bitmap) & mask)
+		//pos = intgr.BitCount(int(bitmap) & mask)
+		pos = uint32(xu.BitCount32(bitmap & mask))
 		occupied := uint32(1 << idx)
-		bitmap |= uint32(occupied)
+		bitmap |= occupied
 
 		//fmt.Printf("%02d: hc %02x, idx %02x, mask 0x%08x, bitmap 0x%08x, pos %02d where %02d\n\n",
 		//	i, hc, idx, mask, bitmap, pos, where)
-		c.Assert(uint(pos), Equals, where)
+		c.Assert(pos, Equals, where)
 	}
 
 }
