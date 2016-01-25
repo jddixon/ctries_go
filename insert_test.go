@@ -7,7 +7,6 @@ package ctries_go
 /////////////////////////////////////////////////////////////////////
 
 import (
-	//"code.google.com/p/intmath/intgr"
 	"fmt"
 	xr "github.com/jddixon/rnglib_go"
 	xu "github.com/jddixon/xlUtil_go"

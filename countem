@@ -1,0 +1,10 @@
+cd ~/dev/go/src/github.com/jddixon/ctries_go
+
+rm -rf tmp/*
+gofmt -w .
+
+pySloc -v -X '^junk' $@             \
+    bash:countem                    \
+    
+    
+
