@@ -4,7 +4,6 @@ package ctries_go
 
 import (
 	"fmt"
-	// . "launchpad.net/gocheck"
 	. "gopkg.in/check.v1"
 	// "sync/atomic"
 	"unsafe"

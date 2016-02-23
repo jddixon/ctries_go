@@ -1,7 +1,6 @@
 package ctries_go
 
 import (
-	// . "launchpad.net/gocheck"
 	"gopkg.in/check.v1"
 	"testing"
 )
