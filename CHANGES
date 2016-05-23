@@ -1,5 +1,8 @@
 ctries_go/CHANGES
 
+v0.1.8
+    2016-05-23
+        * add .dvcz etc, bkp2U, other bash scripts                  SLOC  602
 v0.1.7
     2016-02-23
         * update LICENSE                                            SLOC  394
@@ -24,6 +27,7 @@ v0.1.1
 v0.1.0
     2014-04-04                                                      SLOC  365
         * freeze prior to exporting basic code to hamt_go 
+
 
 
 
