@@ -37,7 +37,9 @@ is either null or a pointer to a leaf key-value pair or a pointer to a
 (for a Ctrie with 32-bit keys) or 6 (for a table with 64-bit keys).</p>
 
 <p>An <strong>indirection node</strong> or <strong>i-node</strong> isolates a table from its parent.
-At any given time the i-node points to its current child table.</p>
+Whereas one might expects the parent to have a pointer to each of its
+children, instead the parent points to an i-node and i-node points to the
+child table.</p>
 
 <h2>Operation</h2>
 
@@ -54,7 +56,8 @@ operations.</p>
 
 <ul>
 <li>constructs a copy of the child table with any changes to be made</li>
-<li>and then uses CAS to swap the pointer to the old child with a pointer to the new child.</li>
+<li>then uses a CAS to swap the pointer to the old child with a pointer to the new child</li>
+<li>and then inspects the child pointer in the i-node.</li>
 </ul>
 
 <p>If after the
@@ -112,7 +115,7 @@ of HAMT in the Go programming language, see
 Follow the SOFTWARE LICENSE link below for more information on project software licensing.</p>  <div class="f">
     <hr />
     <div class="license">
-      <p><a href="LICENSE.html">SOFTWARE LICENSE</a></p>
+      <p><a href="LICENSE-MIT.html">SOFTWARE LICENSE</a></p>
     </div>
     <div class="project">
       github <a href="https://github.com/jddixon/ctries_go">      <img src="img/GitHub-Mark-32px.png" 
