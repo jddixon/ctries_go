@@ -26,7 +26,9 @@ is either null or a pointer to a leaf key-value pair or a pointer to a
 (for a Ctrie with 32-bit keys) or 6 (for a table with 64-bit keys).
 
 An **indirection node** or **i-node** isolates a table from its parent.
-At any given time the i-node points to its current child table.
+Whereas one might expects the parent to have a pointer to each of its
+children, instead the parent points to an i-node and i-node points to the
+child table.
 
 ## Operation
 
@@ -41,7 +43,8 @@ operations.
 If a child table is to be changed, the system
 
 * constructs a copy of the child table with any changes to be made
-* and then uses CAS to swap the pointer to the old child with a pointer to the new child.
+* then uses a CAS to swap the pointer to the old child with a pointer to the new child
+* and then inspects the child pointer in the i-node.
 
 If after the
 swap the i-node points to the new child, the operation has succeeded.

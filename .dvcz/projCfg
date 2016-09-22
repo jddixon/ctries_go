@@ -2,8 +2,8 @@
 project:ctries_go
 package:ctries_go
 mainlang:go
-version:0.1.7
-versionDate:2016-02-23
+version:0.1.10
+versionDate:2016-08-11
 :?dirs?:
 dir:std:ghpDoc
 dir:std:.dvcz
@@ -11,13 +11,18 @@ dir:pkg:ctries_go
 :?files?:
 code:std:.dvcz/projCfg
 code:std:.dvcz/projCfg.local
+code:std:.dvcz/builds
+code:std:.dvcz/lastBuildList
+code:std:.dvcz/version
+code:std:.dvczignore
+code:std:.dvczignore.local
 code:std:.gitignore
+code:std:.gitignore.local
 code:std:/var/app/sharedev/config/projCfg
+txt:std:LICENSE-MIT.md
 txt:std:CHANGES
-txt:std:LICENSE.md
 txt:std:README.md
 txt:std:TODO
-txt:std:.copyright
 bash:std:bkp2U
 bash:std:countem
 bash:std:installit
@@ -38,4 +43,3 @@ go:local:mainNode.go
 go:local:mainNodeI.go
 go:local:sNode.go
 go:local:sNode_test.go
-go:local:version.go

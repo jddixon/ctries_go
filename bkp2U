@@ -8,6 +8,7 @@ then
     -d ../ctries_go \
     -1L  \
     -u $DVCZ_UDIR \
+    -X .ssh \
     $@
   
 else
