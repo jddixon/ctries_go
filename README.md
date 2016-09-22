@@ -26,8 +26,8 @@ is either null or a pointer to a leaf key-value pair or a pointer to a
 (for a Ctrie with 32-bit keys) or 6 (for a table with 64-bit keys).
 
 An **indirection node** or **i-node** isolates a table from its parent.
-Whereas one might expects the parent to have a pointer to each of its 
-children, instead the parent points to an i-node and i-node points to the 
+Whereas one might expects the parent to have a pointer to each of its
+children, instead the parent points to an i-node and i-node points to the
 child table.
 
 ## Operation
