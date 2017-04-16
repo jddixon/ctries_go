@@ -4,7 +4,7 @@ if [ ! -z "${DEV_BASE// }" ]
 then
   cd $DEV_BASE/go/src/github.com/jddixon/ctries_go
   
-  blListGen \
+  bl_listgen \
     -d ../ctries_go \
     -1L  \
     -u $DVCZ_UDIR \

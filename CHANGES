@@ -1,5 +1,8 @@
 ctries_go/CHANGES
 
+v0.1.12
+    2017-04-16
+        * add projConfig.toml                                       SLOC 1028
 v0.1.11
     2016-09-22
         * standardize licnsing                                      SLOC 1023
@@ -36,6 +39,7 @@ v0.1.1
 v0.1.0
     2014-04-04                                                      SLOC  365
         * freeze prior to exporting basic code to hamt_go 
+
 
 
 
