@@ -1,0 +1,22 @@
+[meta]
+    version = '0.1.0'
+
+[project]
+    name = 'ctries_go'  # distro name
+    package = 'ctries_go'  # internal name
+    main_lang = 'go'
+    version = '0.1.13'
+    version_date = '2017-11-01'
+    author = 'Jim Dixon'
+    author_email = 'jddixon@gmail.com'
+    copyright = '2014-2017'
+    description = 'ctries implementation for Go'
+    dev_status = 'alpha'
+    license = 'mit'
+    relpath = 'go/src/github.com/jddixon/ctries_go'
+    state = 'shared'
+    url = 'https://jddixon.github.io/ctries_go'
+
+[go]
+    cmds=[]
+
